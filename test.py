@@ -12,7 +12,7 @@ class TestProgram(unittest.TestCase):
 
         # If use_args is True, the input should be passed as a command-line argument
         pro = program+str('.py')
-        cmd = [os.path.join(self.prog_dir, pro)]
+        cmd = ['python3', os.path.join(self.prog_dir, pro)]
         if use_args:
             cmd.append(input_file)
         else:
