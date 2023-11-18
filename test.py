@@ -11,8 +11,8 @@ class TestProgram(unittest.TestCase):
         expected_file = f'{self.test_dir}/{program}.{test_name}'+ ('.arg.out' if use_args else '.out')
 
         # If use_args is True, the input should be passed as a command-line argument
-        #pro = program+str('.py')
-        cmd = [os.path.join(self.prog_dir, program)]
+        pro = program+str('.py')
+        cmd = [os.path.join(self.prog_dir, pro)]
         if use_args:
             cmd.append(input_file)
         else:
