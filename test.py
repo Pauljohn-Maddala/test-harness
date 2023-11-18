@@ -21,6 +21,8 @@ class TestProgram(unittest.TestCase):
                 self.assertEqual(process.returncode, 0)
                 actual_output = process.stdout.decode('utf-8')
 
+        self.assertEqual(process.returncode, 0, f"Program exited with {process.returncode}. Error: {process.stderr}")
+
         # When use_args is True, we need to execute the program again
         # as some programs might behave differently when using arguments vs. stdin
         if use_args:
