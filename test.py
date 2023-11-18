@@ -3,8 +3,8 @@ import os
 import unittest
 
 class TestProgram(unittest.TestCase):
-    test_dir = 'test'
-    prog_dir = 'prog'
+    test_dir = './test'
+    prog_dir = './prog'
 
     def run_test(self, program, test_name, use_args=False):
         input_file = f'{self.test_dir}/{program}.{test_name}.in'
