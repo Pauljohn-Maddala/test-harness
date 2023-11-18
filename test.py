@@ -11,7 +11,11 @@ class TestProgram(unittest.TestCase):
         expected_file = f'{self.test_dir}/{program}.{test_name}' + ('.arg.out' if use_args else '.out')
         cmd = ['python3', os.path.join(self.prog_dir, f'{program}.py')]
     
-        if program == 'wc':
+        if program == 'gron':
+            # If 'gron', expect a JSON file as an argument
+            cmd.append(input_file)
+            process = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        elif program == 'wc':
             # For 'wc', when use_args is False, the content should be passed through STDIN
             if not use_args:
                 with open(input_file, 'r') as f:
@@ -22,7 +26,7 @@ class TestProgram(unittest.TestCase):
                 cmd.append(input_file)
                 process = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         else:
-            # For other programs, assume args need to be passed directly
+            # For other programs, read the .in file and pass arguments
             with open(input_file, 'r') as f:
                 args = f.read().strip().split()
             cmd.extend(args)
@@ -39,6 +43,7 @@ class TestProgram(unittest.TestCase):
             expected_output = f.read().strip()
         
         self.assertEqual(actual_output, expected_output, f'Failed test: {program}.{test_name} with {"arguments" if use_args else "stdin"}')
+
 
     def test_programs(self):
         for filename in os.listdir(self.test_dir):
