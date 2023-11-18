@@ -9,27 +9,27 @@ class TestProgram(unittest.TestCase):
     def run_test(self, program, test_name, use_args=False):
         input_file = f'{self.test_dir}/{program}.{test_name}.in'
         expected_file = f'{self.test_dir}/{program}.{test_name}'+ ('.arg.out' if use_args else '.out')
-
-        # If use_args is True, the input should be passed as a command-line argument
-        pro = program+str('.py')
-        cmd = ['python3', os.path.join(self.prog_dir, pro)]
+    
+        # Correctly append the '.py' to the program name
+        cmd = ['python3', os.path.join(self.prog_dir, f'{program}.py')]
+    
+        # The following block needs to handle use_args correctly
         if use_args:
+            # If use_args is True, pass input_file as a command-line argument
             cmd.append(input_file)
+            process = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         else:
+            # If use_args is False, pass input_file as STDIN
             with open(input_file, 'rb') as f:
                 process = subprocess.run(cmd, stdin=f, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-                self.assertEqual(process.returncode, 0)
-                actual_output = process.stdout.decode('utf-8')
-
-        self.assertEqual(process.returncode, 0, f"Program exited with {process.returncode}. Error: {process.stderr}")
-
-        # When use_args is True, we need to execute the program again
-        # as some programs might behave differently when using arguments vs. stdin
-        if use_args:
-            process = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            self.assertEqual(process.returncode, 0)
-            actual_output = process.stdout.decode('utf-8')
-
+    
+        # Check if the process exited with a non-zero status
+        self.assertEqual(process.returncode, 0, f"Program exited with {process.returncode}. Error: {process.stderr.decode('utf-8')}")
+    
+        # Get the actual output from the program
+        actual_output = process.stdout.decode('utf-8')
+    
+        # Compare the actual output to the expected output
         with open(expected_file, 'r') as f:
             expected_output = f.read().strip()
         
