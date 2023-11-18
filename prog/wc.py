@@ -21,36 +21,20 @@ def wc(text):
 
 # Main function for command-line usage
 def main():
+    # Instantiate the parser
     parser = argparse.ArgumentParser(description='A Python implementation of the wc utility.')
+    
+    # Add arguments to the parser
     parser.add_argument('files', nargs='*', type=argparse.FileType('r'), default=[sys.stdin],
-                    help='File(s) to read from. If omitted or "-", will read from STDIN.')
-    #parser.add_argument('file', nargs='?', type=argparse.FileType('r'), default=sys.stdin,
-    #                    help='A filename to read from. If omitted, will read from STDIN.')
+                        help='File(s) to read from. If omitted or "-", will read from STDIN.')
     parser.add_argument('-l', '--lines', action='store_true', help='Count the number of lines')
     parser.add_argument('-w', '--words', action='store_true', help='Count the number of words')
     parser.add_argument('-c', '--characters', action='store_true', help='Count the number of characters')
 
+    # Now we can parse the arguments
     args = parser.parse_args()
 
-    text = args.file.read()
-    counts = wc(text)
-
-    output = []
-    if args.lines:
-        output.append(str(counts[0]))
-    if args.words:
-        output.append(str(counts[1]))
-    if args.characters:
-        output.append(str(counts[2]))
-
-    if not output:
-        output = [str(count) for count in counts]
-
-    print(" ".join(output))
-
-
-if __name__ == '__main__':
-    args = parser.parse_args()
+    # Process the files
     total_lines, total_words, total_characters = 0, 0, 0
     for file in args.files:
         text = file.read()
@@ -60,5 +44,12 @@ if __name__ == '__main__':
         total_characters += counts[2]
         output = [str(count) for count in counts]
         print(f"{' '.join(output)} {file.name if file.name != '<stdin>' else ''}")
+    
+    # If more than one file, print the totals
     if len(args.files) > 1:
         print(f"{total_lines} {total_words} {total_characters} total")
+
+
+
+if __name__ == '__main__':
+    main()
