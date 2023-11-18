@@ -24,6 +24,6 @@ jobs:
     - name: Run Test Harness
       run: |
         chmod +x ./prog/wc
-        chmod +x ./prog/gron.py
-        chmod +x ./prog/file_finder.py
+        chmod +x ./prog/gron
+        chmod +x ./prog/file_finder
         python test.py
