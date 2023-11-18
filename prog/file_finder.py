@@ -28,7 +28,7 @@ def file_finder(root_dir, pattern='*', min_size=None, max_size=None, before=None
 
 def main():
     parser = argparse.ArgumentParser(description='Search for files based on various criteria.')
-    parser.add_argument('./test', help='Root directory to search for files.')
+    parser.add_argument('./test/', help='Root directory to search for files.')
     # Add other parser arguments as needed
     args = parser.parse_args()
     matches = file_finder(args.root_dir) # and other arguments
