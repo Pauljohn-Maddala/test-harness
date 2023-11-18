@@ -21,6 +21,7 @@ class TestProgram(unittest.TestCase):
             # Pass the arguments to the program
             cmd.extend(args)
             process = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
         else:
             # If use_args is False, pass input_file as STDIN
             with open(input_file, 'rb') as f:
