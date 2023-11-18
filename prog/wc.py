@@ -44,7 +44,7 @@ def main():
     if not output:
         output = [str(count) for count in counts]
 
-    print("\t".join(output))
+    print(" ".join(output))
 
 if __name__ == '__main__':
 
