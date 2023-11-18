@@ -15,8 +15,11 @@ class TestProgram(unittest.TestCase):
     
         # The following block needs to handle use_args correctly
         if use_args:
-            # If use_args is True, pass input_file as a command-line argument
-            cmd.append(input_file)
+            # Read arguments from the .in file
+            with open(input_file, 'r') as f:
+                args = f.read().strip().split()
+            # Pass the arguments to the program
+            cmd.extend(args)
             process = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         else:
             # If use_args is False, pass input_file as STDIN
