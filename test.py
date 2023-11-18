@@ -7,28 +7,28 @@ class TestProgram(unittest.TestCase):
     prog_dir = './prog'
 
     def run_test(self, program, test_name, use_args=False):
-    input_file = f'{self.test_dir}/{program}.{test_name}.in'
-    expected_file = f'{self.test_dir}/{program}.{test_name}' + ('.arg.out' if use_args else '.out')
-
-    cmd = ['python3', os.path.join(self.prog_dir, f'{program}.py')]
-
-    if use_args or program == 'wc':
-        # If use_args is True or program is wc, pass input_file as a command-line argument
-        cmd.append(input_file)
-        process = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    else:
-        # Else, pass input_file as STDIN
-        with open(input_file, 'rb') as f:
-            process = subprocess.run(cmd, stdin=f, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-
-    self.assertEqual(process.returncode, 0, f"Program exited with {process.returncode}. Error: {process.stderr.decode('utf-8')}")
-
-    actual_output = process.stdout.decode('utf-8').strip()
-
-    with open(expected_file, 'r') as f:
-        expected_output = f.read().strip()
-
-    self.assertEqual(actual_output, expected_output, f'Failed test: {program}.{test_name} with {"arguments" if use_args else "stdin"}')
+        input_file = f'{self.test_dir}/{program}.{test_name}.in'
+        expected_file = f'{self.test_dir}/{program}.{test_name}' + ('.arg.out' if use_args else '.out')
+    
+        cmd = ['python3', os.path.join(self.prog_dir, f'{program}.py')]
+    
+        if use_args or program == 'wc':
+            # If use_args is True or program is wc, pass input_file as a command-line argument
+            cmd.append(input_file)
+            process = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        else:
+            # Else, pass input_file as STDIN
+            with open(input_file, 'rb') as f:
+                process = subprocess.run(cmd, stdin=f, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    
+        self.assertEqual(process.returncode, 0, f"Program exited with {process.returncode}. Error: {process.stderr.decode('utf-8')}")
+    
+        actual_output = process.stdout.decode('utf-8').strip()
+    
+        with open(expected_file, 'r') as f:
+            expected_output = f.read().strip()
+    
+        self.assertEqual(actual_output, expected_output, f'Failed test: {program}.{test_name} with {"arguments" if use_args else "stdin"}')
 
         
 
