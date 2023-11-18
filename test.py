@@ -14,8 +14,11 @@ class TestProgram(unittest.TestCase):
     
         if use_args:
             with open(input_file, 'r') as f:
-                # Assuming the arguments are newline-separated
+                # Read the arguments from the .in file and split them on newlines
                 args = f.read().strip().splitlines()
+                # Flatten the list of arguments (since each line is an argument)
+                args = [item for sublist in map(str.split, args) for item in sublist]
+
             cmd.extend(args)
             process = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         else:
