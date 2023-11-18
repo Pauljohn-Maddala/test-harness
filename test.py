@@ -17,7 +17,14 @@ class TestProgram(unittest.TestCase):
         with open(input_file, 'r') as f:
             # Assumes arguments are separated by newlines or spaces
             args = f.read().strip().split()
-    
+
+        # Inside the run_test method, before running the wc.py script
+        if program == 'wc':
+            print('Running wc test with the following input:')
+            with open(input_file, 'r') as f:
+                print(f.read())
+            print('Expected output:', expected_output)
+        
         # Pass the arguments to the program
         if use_args:
             cmd.extend(args)
@@ -36,6 +43,9 @@ class TestProgram(unittest.TestCase):
             expected_output = f.read().strip()
         
         self.assertEqual(actual_output, expected_output, f'Failed test: {program}.{test_name} with {"arguments" if use_args else "stdin"}')
+
+        
+
 
     def test_programs(self):
         for filename in os.listdir(self.test_dir):
