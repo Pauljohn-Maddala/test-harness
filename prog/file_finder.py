@@ -31,7 +31,7 @@ def main():
     parser.add_argument('./test', help='Root directory to search for files.')
     parser.add_argument('--pattern', help='Pattern to match filenames, e.g., "*.txt".', default='*')
     # Add other parser arguments as needed
-     args = parser.parse_args()
+    args = parser.parse_args()
     matches = file_finder(
         args.root_dir,
         pattern=args.pattern
