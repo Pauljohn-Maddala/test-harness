@@ -22,8 +22,10 @@ def wc(text):
 # Main function for command-line usage
 def main():
     parser = argparse.ArgumentParser(description='A Python implementation of the wc utility.')
-    parser.add_argument('file', nargs='?', type=argparse.FileType('r'), default=sys.stdin,
-                        help='A filename to read from. If omitted, will read from STDIN.')
+    parser.add_argument('files', nargs='*', type=argparse.FileType('r'), default=[sys.stdin],
+                    help='File(s) to read from. If omitted or "-", will read from STDIN.')
+    #parser.add_argument('file', nargs='?', type=argparse.FileType('r'), default=sys.stdin,
+    #                    help='A filename to read from. If omitted, will read from STDIN.')
     parser.add_argument('-l', '--lines', action='store_true', help='Count the number of lines')
     parser.add_argument('-w', '--words', action='store_true', help='Count the number of words')
     parser.add_argument('-c', '--characters', action='store_true', help='Count the number of characters')
@@ -46,6 +48,17 @@ def main():
 
     print(" ".join(output))
 
-if __name__ == '__main__':
 
-    main()
+if __name__ == '__main__':
+    args = parser.parse_args()
+    total_lines, total_words, total_characters = 0, 0, 0
+    for file in args.files:
+        text = file.read()
+        counts = wc(text)
+        total_lines += counts[0]
+        total_words += counts[1]
+        total_characters += counts[2]
+        output = [str(count) for count in counts]
+        print(f"{' '.join(output)} {file.name if file.name != '<stdin>' else ''}")
+    if len(args.files) > 1:
+        print(f"{total_lines} {total_words} {total_characters} total")
