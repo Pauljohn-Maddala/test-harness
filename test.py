@@ -23,7 +23,7 @@ class TestProgram(unittest.TestCase):
             print('Running wc test with the following input:')
             with open(input_file, 'r') as f:
                 print(f.read())
-            print('Expected output:', expected_output)
+            #print('Expected output:', expected_output)
         
         # Pass the arguments to the program
         if use_args:
