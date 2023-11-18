@@ -8,35 +8,32 @@ class TestProgram(unittest.TestCase):
 
     def run_test(self, program, test_name, use_args):
         input_file = f'{self.test_dir}/{program}.{test_name}.in'
-        expected_file = f'{self.test_dir}/{program}.{test_name}'+ ('.arg.out' if use_args else '.out')
-
-        # Construct the command with the path to the Python script
+        expected_file = f'{self.test_dir}/{program}.{test_name}' + ('.arg.out' if use_args else '.out')
         cmd = ['python3', os.path.join(self.prog_dir, f'{program}.py')]
-
-        # Handle program-specific execution
-        if program == 'gron':
-            # If program is gron, expect JSON input from a file or STDIN
-            if use_args:
-                # Pass the filename as an argument
-                cmd.append(input_file)
-            else:
-                # Pass JSON data through STDIN
+    
+        if program == 'wc':
+            # For 'wc', when use_args is False, the content should be passed through STDIN
+            if not use_args:
                 with open(input_file, 'r') as f:
                     input_content = f.read()
                 process = subprocess.run(cmd, input=input_content.encode(), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            else:
+                # If use_args is True, 'wc' expects a file path
+                cmd.append(input_file)
+                process = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         else:
-            # For file_finder and wc, read the .in file and pass arguments
+            # For other programs, assume args need to be passed directly
             with open(input_file, 'r') as f:
-                args = f.read().strip().split(' ', 1)
+                args = f.read().strip().split()
             cmd.extend(args)
             process = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-
+    
         # Check if the process exited with a non-zero status
         self.assertEqual(process.returncode, 0, f"Program exited with {process.returncode}. Error: {process.stderr.decode('utf-8')}")
-
+    
         # Get the actual output from the program
         actual_output = process.stdout.decode('utf-8').strip()
-
+    
         # Compare the actual output to the expected output
         with open(expected_file, 'r') as f:
             expected_output = f.read().strip()
