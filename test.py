@@ -13,16 +13,15 @@ class TestProgram(unittest.TestCase):
         # Construct the command with the path to the Python script
         cmd = ['python3', os.path.join(self.prog_dir, f'{program}.py')]
     
-        # Read arguments from the .in file
-        with open(input_file, 'r') as f:
-            # Assumes arguments are newline-separated or space-separated
-            args = f.read().strip().split()
+        if use_args:
+            # If use_args is True, pass input_file as a command-line argument
+            cmd.append(input_file)
+        else:
+            # If use_args is False, pass the content of input_file as STDIN
+            with open(input_file, 'r') as f:
+                input_content = f.read()
+            process = subprocess.run(cmd, input=input_content.encode(), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     
-        # Pass the arguments to the program
-        cmd.extend(args)
-        process = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    
-        # Check if the process exited with a non-zero status
         self.assertEqual(process.returncode, 0, f"Program exited with {process.returncode}. Error: {process.stderr.decode('utf-8')}")
     
         # Get the actual output from the program
