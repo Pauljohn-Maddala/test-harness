@@ -7,11 +7,11 @@ class TestProgram(unittest.TestCase):
     prog_dir = './prog'
 
     def run_test(self, program, test_name, use_args):
-        input_file = os.path.join(self.test_dir, f'{program}.{test_name}.in')
-        expected_file = os.path.join(self.test_dir, f'{program}.{test_name}{'.arg.out' if use_args else '.out'}')
-        status_file = os.path.join(self.test_dir, f'{program}.{test_name}.status')
-        cmd = ['python3', os.path.join(self.prog_dir, f'{program}.py')]
-
+        input_file = os.path.join(self.test_dir, f"{program}.{test_name}.in")
+        expected_file = os.path.join(self.test_dir, f"{program}.{test_name}{'.arg.out' if use_args else '.out'}")
+        status_file = os.path.join(self.test_dir, f"{program}.{test_name}.status")
+        cmd = ['python3', os.path.join(self.prog_dir, f"{program}.py")]
+    
         # Read arguments from the .in file and pass them to the command
         if program != 'wc' or use_args:
             with open(input_file, 'r') as f:
@@ -23,24 +23,24 @@ class TestProgram(unittest.TestCase):
             with open(input_file, 'r') as f:
                 input_content = f.read()
             process = subprocess.run(cmd, input=input_content.encode(), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-
+    
         # Get the expected exit status
         expected_status = 0  # Default expected status is 0
         if os.path.exists(status_file):
             with open(status_file, 'r') as f:
                 expected_status = int(f.read().strip())
-
+    
         # Check the exit status against the expected status
         self.assertEqual(process.returncode, expected_status, f"Program exited with {process.returncode}, expected {expected_status}. Error: {process.stderr.decode('utf-8')}")
-
+    
         # Get the actual output from the program
         actual_output = process.stdout.decode('utf-8').strip()
-
+    
         # Compare the actual output to the expected output
         with open(expected_file, 'r') as f:
             expected_output = f.read().strip()
-
-        self.assertEqual(actual_output, expected_output, f'Failed test: {program}.{test_name} with {"arguments" if use_args else "stdin"}')
+    
+        self.assertEqual(actual_output, expected_output, f"Failed test: {program}.{test_name} with {'arguments' if use_args else 'stdin'}")
 
     def test_programs(self):
         for filename in os.listdir(self.test_dir):
