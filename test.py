@@ -4,7 +4,7 @@ import unittest
 
 class TestProgram(unittest.TestCase):
     test_dir = './test'
-    prog_dir = './prog'
+    prog_dir = './prog1'
 
     def run_test(self, program, test_name, use_args):
         input_file = f'{self.test_dir}/{program}.{test_name}.in'
