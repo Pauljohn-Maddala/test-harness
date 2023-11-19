@@ -14,10 +14,10 @@ Approximately 16 hours spent on this project.
 I have implemented a test harness in `test.py` that automates the testing process. This harness reads `.in` input files and compares the program's output to the expected `.out` files. Tests were written to cover a range of scenarios, including edge cases for error handling and standard usage.
 
 ## Known Bugs/Issues
-- [Description of any known bugs or issues that were not resolved.]
+- No issues are currently running; the utility functions as expected.
 
 ## Difficult Issues and Resolutions
-- One difficult issue was [describe issue]. I resolved it by [describe your solution].
+- I encountered an issue where `gron.py` was incorrectly interpreting a JSON structure as a filename. After a thorough review, I resolved the problem by adjusting the test harness to distinguish when to provide the JSON data directly via STDIN and when to treat the input as a file argument.
 
 ## Implemented Extensions
 - Command-Line Flags for wc.py: The utility supports flags to selectively count lines, words, or characters.
